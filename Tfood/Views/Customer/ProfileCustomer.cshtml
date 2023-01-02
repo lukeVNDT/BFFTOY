@@ -1,0 +1,466 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using PagedList.Core.Mvc
+@model Tfood.Models.Customer
+
+@{
+    ViewData["Title"] = "ProfileCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Tfood.ViewModel.ChangePasswordVM changePassword = new Tfood.ViewModel.ChangePasswordVM();
+    List<Order> order = ViewBag.OrderList;
+    List<Favorite> favorite = ViewBag.FavoriteList;
+    int CurrentPage = ViewBag.CurrentPage;
+    PagedList.Core.IPagedList<Order> orders = ViewBag.Page;
+    PagedList.Core.IPagedList<Favorite> favorites = ViewBag.PageFavorite;
+
+}
+
+@if (Model != null)
+{
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Xin chào, @Model.Fullname</h4>
+                    <p class="mb-0">Đây là trang cá nhân của bạn</p>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Trang chủ</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile card card-body px-3 pt-3 pb-0">
+                    <div class="profile-head">
+                        <div class="photo-content">
+                            <div class="cover-photo"></div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-photo">
+                                <img id="imgReview" src="/images/customers/@Model.Avatar" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-name px-3 pt-2">
+                                    <h4 class="text-primary mb-0">@Model.Fullname</h4>
+                                </div>
+                                <div class="profile-email px-2 pt-2">
+                                    <h4 class="text-muted mb-0">@Model.Email</h4>
+                                    <p>Email</p>
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="#" class="btn btn-primary light sharp" data-toggle="dropdown" aria-expanded="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg></a>
+                                    <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-169px, 30px, 0px);">
+                                        <li class="dropdown-item"><i class="fa fa-user-circle text-primary mr-2"></i> View profile</li>
+                                        <li class="dropdown-item"><i class="fa fa-users text-primary mr-2"></i> Add to close friends</li>
+                                        <li class="dropdown-item"><i class="fa fa-plus text-primary mr-2"></i> Add to group</li>
+                                        <li class="dropdown-item"><i class="fa fa-ban text-primary mr-2"></i> Block</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="profile-tab">
+                            <div class="custom-tab-1">
+                                <ul class="nav nav-tabs">
+
+                                    <li class="nav-item">
+                                        <a href="#about-me" data-toggle="tab" class="nav-link"><i class="la la-user mr-2"></i> Thông tin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#profile-settings" data-toggle="tab" class="nav-link"><i class="fa fa-cog mr-2" aria-hidden="true"></i> Tài khoản</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#secure-account" data-toggle="tab" class="nav-link"><i class="fa fa-shield mr-2" aria-hidden="true"></i> Bảo mật</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#list-order" data-toggle="tab" class="nav-link"><i class="fa fa-list-alt mr-2" aria-hidden="true"></i> Đơn hàng</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="#list-favorite" data-toggle="tab" class="nav-link"><i class="fa fa-heart mr-2" aria-hidden="true"></i> Yêu thích</a>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content">
+
+                                    <div id="about-me" class="tab-pane active">
+
+                                        <div class="profile-personal-info mt-4">
+                                            <h4 class="text-primary mb-4">Thông tin cá nhân</h4>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Họ và tên <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Fullname</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Địa chỉ Email <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Email</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">Ngày sinh <span class="pull-right">:</span></h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Dob</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Số điện thoại <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Phone</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Địa chỉ <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Address</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="profile-settings" class="tab-pane fade">
+                                        <div class="mt-4">
+                                            <div class="settings-form">
+                                                <h4 class="text-primary mb-4">Cài đặt tài khoản</h4>
+                                                <form id="update-profile" asp-action="UpdateProfile" asp-route-customerid="@Model.Id" enctype="multipart/form-data">
+                                                    <input type="hidden" asp-for="Id" />
+                                                    <input type="hidden" asp-for="Email" />
+                                                    <input type="hidden" asp-for="Password" />
+                                                    <input type="hidden" asp-for="CreateDate" />
+                                                    <input type="hidden" asp-for="Salt" />
+                                                    <input type="hidden" asp-for="Deactivate" />
+                                                    <input type="hidden" asp-for="Avatar" />
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Họ và tên</label>
+                                                            <input asp-for="@Model.Fullname" type="text" placeholder="Email" class="form-control">
+                                                            <span asp-validation-for="@Model.Fullname" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Ngày sinh</label>
+                                                            <input asp-for="@Model.Dob" type="date" class="form-control">
+                                                            <span asp-validation-for="@Model.Dob" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Avatar</label>
+                                                        <input style="border: none !important;" name="Avatar" type="file" asp-for="@Model.Avatar" class="form-control" onchange="document.getElementById('imgReview').src = window.URL.createObjectURL(this.files[0])" />
+                                                        <span asp-validation-for="@Model.Avatar" class="text-danger"></span>
+                                                    </div>
+                                                    <img id="imgReview" class="mb-4" alt="Ảnh" src="/images/customers/@Model.Avatar" width="150" height="150" />
+                                                    <div class="form-group">
+                                                        <label>Số điện thoại</label>
+                                                        <input asp-for="@Model.Phone" type="number" placeholder="1234 Main St" class="form-control">
+                                                        <span asp-validation-for="@Model.Phone" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Địa chỉ</label>
+                                                        <textarea asp-for="@Model.Address" rows="4" class="form-control"></textarea>
+                                                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+                                                    </div>
+
+                                                    <button id="btn-update-profile" class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div id="secure-account" class="tab-pane fade">
+                                        @await Html.PartialAsync("_ChangePasswordPartialView", changePassword)
+                                    </div>
+
+                                    <div id="list-order" class="tab-pane fade">
+                                        <div class="mt-4">
+                                            <div class="settings-form">
+                                                <h4 class="text-primary mb-4">Danh sách đơn hàng</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table table-responsive-md">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:80px;"><strong>STT</strong></th>
+                                                                <th>Mã đơn hàng</th>
+                                                                <th>Tình trạng</th>
+                                                                <th>Tổng tiền</th>
+                                                                <th>Ngày đặt hàng</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (order != null && order.Count() > 0)
+                                                            {
+                                                                int i = 1;
+                                                                @foreach (var item in order)
+                                                                {
+                                                                    <tr>
+                                                                        <td><strong>@(i++)</strong></td>
+                                                                        <td>@item.Id</td>
+                                                                        <td>
+                                                                            @if (item.TransactionStatusId == 5)
+                                                                            {
+                                                                                <span class="badge badge-pill badge-secondary">@item.TransactionStatus.Description</span>
+                                                                            }
+                                                                            else if (item.TransactionStatusId == 6)
+                                                                            {
+                                                                                <span class="badge badge-pill badge-primary">@item.TransactionStatus.Description</span>
+                                                                            }
+                                                                            else if (item.TransactionStatusId == 7)
+                                                                            {
+                                                                                <span class="badge badge-pill badge-warning">@item.TransactionStatus.Description</span>
+                                                                            }
+                                                                            else if (item.TransactionStatusId == 8)
+                                                                            {
+                                                                                <span class="badge badge-pill badge-success">@item.TransactionStatus.Description</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="badge badge-pill badge-danger">@item.TransactionStatus.Description</span>
+                                                                            }
+
+                                                                        </td>
+
+                                                                        <td>@item.Total.ToString("#,##0") VNĐ</td>
+                                                                        <td>
+                                                                            @item.OrderDate.Value.ToString("dd/MM/yyyy")
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="dropdown ml-auto text-right">
+                                                                                <div class="btn-link" data-toggle="dropdown">
+                                                                                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                                                                </div>
+                                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                                    <a id="btn-detail" data-orderid="@item.Id" class="dropdown-item"><i class="las la-info-circle scale5 text-success mr-2"></i> Xem chi tiết</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+
+                                                            }
+
+
+                                                        </tbody>
+                                                    </table>
+
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center">
+                                                            <pager class="pager-container" list="@orders" asp-controller="Customer" asp-action="GetProfile" />
+                                                        </ul>
+                                                    </nav>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="detail-form">
+                                                @await Component.InvokeAsync("CustomerOrder")
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <div id="list-favorite" class="tab-pane fade">
+                                        <div class="mt-4">
+                                            <div class="settings-form">
+                                                <h4 class="text-primary mb-4">Danh sách sản phẩm yêu thích</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table table-responsive-md">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:80px;"><strong>STT</strong></th>
+                                                                <th>Tên sản phẩm</th>
+                                                                <th>Đơn giá</th>
+                                                                <th>Hình ảnh</th>
+                                                                <th>Tình trạng</th>
+                                                                <th>Hành động</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (favorite != null && favorite.Count() > 0)
+                                                            {
+                                                                int i = 1;
+                                                                @foreach (var item in favorite)
+                                                                {
+                                                                    string url = $"/product-detail/{item.Product.Alias}--{item.Product.Id}.html";
+                                                                    <tr>
+                                                                        <td><strong>@(i++)</strong></td>
+                                                                        <td>
+                                                                            <a href="@url">
+                                                                                @item.Product.Name
+                                                                            </a>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            @item.Product.Price.Value.ToString("#,##0") VNĐ
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <a href="@url">
+                                                                                <img src="/images/products/@item.Product.Thumb" height="150" width="150" />
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (item.Product.UnitInStock > 0)
+                                                                            {
+                                                                                <span class="badge badge-pill badge-success">Còn hàng</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="badge badge-pill badge-danger">Hết hàng</span>
+                                                                            }
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="d-flex">
+                                                                                <form method="post" id="deleteForm" asp-controller="Favorite" asp-action="RemoveFavorite" asp-route-productID="@item.Product.Id">
+                                                                                    <input id="txtcusid" type="hidden" value="@Context.Session.GetString("CustomerId")"/>
+                                                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                                                    <button data-productid="@item.Product.Id" type="button" class="btn light btn-danger btn-sm sharp removefav"><i class="las la-times-circle scale5"></i></button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+
+                                                            }
+
+
+                                                        </tbody>
+                                                    </table>
+
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center">
+                                                            <pager class="pager-container" list="@favorites" asp-controller="Customer" asp-action="GetProfile" />
+                                                        </ul>
+                                                    </nav>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    <script>
+        
+        var spinner = '<div style="height:1.5rem;width:1.5rem;" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>';
+
+
+        $(".removefav").click(function(e) {
+            var productid = $(this).attr("data-productid");
+            var customerId = $("#txtcusid").val();
+            var newval = parseInt(customerId);
+            var that = $(this);
+            $.ajax({
+                url: "/Favorite/RemoveFavorite",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid,
+                        customerID: newval},
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        notyf.success('Hủy yêu thích sản phẩm thành công!');
+                        that.parent().parent().parent().parent().remove();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Favorite Error !")
+                }
+            });
+        });
+
+
+        $("#btn-detail").click(function(e) {
+            var orderId = $(this).data("orderid");
+            $.ajax({
+                type: 'GET',
+                url: '/load-order-list-customer.html/' + orderId,
+                success: function(result) {
+                    $(".detail-form").load("/load-order-list-customer.html/" + orderId);
+                }
+            });
+        });
+
+        $('#btn-change').click(function(e) {
+            e.preventDefault();
+            var formData = $("#change-password-form").serialize();
+            $(this).html(spinner);
+            setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/doi-mat-khau.html',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: formData,
+                    success: function(result) {
+                        if (result.status == "failed") {
+                            $('#btn-change').text("Lưu thay đổi");
+                            notyf.error(result.data);
+                        }
+                        else {
+                            $("#current-pass").val("");
+                            $("#new-pass").val("");
+                            $("#confirm-pass").val("");
+                            $('#btn-change').text("Lưu thay đổi");
+                            notyf.success('Thay đổi mật khẩu thành công');
+                        }
+                    }
+                })
+            }, 1000);
+        })
+    </script>
+}

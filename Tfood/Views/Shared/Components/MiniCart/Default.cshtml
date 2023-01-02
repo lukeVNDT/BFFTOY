@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model List<Tfood.ViewModel.CartVM>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
+        <ul class="contacts">
+            <li class="name-first-letter">Sản phẩm</li>
+            @foreach (var item in Model)
+            {
+                string url = $"/product-detail/{item.product.Alias}--{item.product.Id}.html";
+                <li class="active">
+                    <div class="d-flex bd-highlight">
+                        <a href="@url">
+                            <img class="align-self-end mr-3 rounded" width="60" src="/images/products/@item.product.Thumb" alt="DexignZone">
+                        </a>
+                        
+                        <div class="user_info">
+                            <a href="@url">
+                                <span>@item.product.Name</span>
+                            </a>
+                            
+                            <p class="text-primary">@item.product.Price.Value.ToString("#,##0") VNĐ x @item.amount</p>
+                        </div>
+                        <div class="ml-auto">
+                            <i onclick="removeCart()" id="removecart" data-productid="@item.product.Id" class="las la-times-circle scale5 text-danger mr-2"></i>
+
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-center mb-3" style="position: relative; bottom: 100px;">
+
+            <a href="/gio-hang.html" class="btn btn-primary btn-sm mr-2">Xem Giỏ hàng</a>
+
+
+            <a href="@(Context.Session.GetString("CustomerId") != null ? "/thanh-toan.html" : "/dang-nhap.html")" class="btn btn-danger btn-sm">Thanh toán</a>
+
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
+        <ul class="contacts">
+            <li class="name-first-letter">Giỏ hàng trống</li>
+        </ul>
+    </div>
+}

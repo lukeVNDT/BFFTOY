@@ -1,0 +1,319 @@
+﻿@model Tfood.ViewModel.HomeVM
+
+@{
+    ViewData["Title"] = "Home Page";
+    List<Product> allProduct = ViewBag.AllProduct;
+}
+
+
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Chào mừng đến với BFFToy</h4>
+                <p class="mb-0">Your business dashboard template</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="">Trang Chủ</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+            <div class="widget-stat card bg-danger">
+                <div class="card-body  p-4">
+                    <div class="media">
+                        <span class="mr-3">
+                            <img src="/images/truck-ico.png" />
+                        </span>
+                        <div class="media-body text-white text-right">
+                            <p class="mb-1">Giao hàng nhanh</p>
+                            <h5 class="text-white">và hoàn trả hàng miễn phí nếu có bất cứ vấn đề nào về chất lượng không đảm bảo.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+            <div class="widget-stat card bg-success">
+                <div class="card-body p-4">
+                    <div class="media">
+                        <span class="mr-3">
+                            <img src="/images/credit-ico.png" />
+                        </span>
+                        <div class="media-body text-white text-right">
+                            <p class="mb-1">Thanh toán an toàn</p>
+                            <h5 class="text-white">Thanh toán với một trong những phương thức thanh toán an toàn nhất.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+            <div class="widget-stat card bg-info">
+                <div class="card-body p-4">
+                    <div class="media">
+                        <span class="mr-3">
+                            <img src="/images/shopping-basket.png" />
+                        </span>
+                        <div class="media-body text-white text-right">
+                            <p class="mb-1">Tự tin mua sắm</p>
+                            <h5 class="text-white">Bảo vệ người mua của chúng tôi trong suốt quá trình mua hàng tại website.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+            <div class="widget-stat card bg-primary">
+                <div class="card-body p-4">
+                    <div class="media">
+                        <span class="mr-3">
+                            <img src="/images/support.png" />
+                        </span>
+                        <div class="media-body text-white text-right">
+                            <p class="mb-1">Trung tâm hỗ trợ 24/7</p>
+                            <h5 class="text-white">Có câu hỏi? vui lòng liên hệ hoặc chat online để chúng tôi kịp thời tư vấn cho bạn.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="custom-tab-1">
+                <ul class="nav nav-tabs mb-4 nav-fill">
+                    <li class="nav-item">
+                        <span class="mr-3">
+                            <img width="50" src="~/adminAsset/images/toy-duck.png" />
+                        </span>
+                        <a style="background-color: #fbfbfb;" class="nav-link active" data-toggle="tab" href="#home1"> Tất cả</a>
+                    </li>
+                    @foreach (var item in Model.Products)
+                    {
+                        string idTab = $"--{@item.Category.Id}";
+                        <li class="nav-item">
+                            <span class="mr-3">
+                                <img width="50" src="/images/categories/@item.Category.Thumb" />
+                            </span>
+
+                            <a style="background-color: #fbfbfb;" class="nav-link" data-toggle="tab" href="#@idTab"> @item.Category.Name</a>
+                        </li>
+                    }
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="home1" role="tabpanel">
+                        <div class="pt-4">
+                            @await Html.PartialAsync("_ListProductPartialView", allProduct)
+                        </div>
+                    </div>
+
+                    @foreach (var item in Model.Products)
+                    {
+                        string idTab = $"--{@item.Category.Id}";
+                        <div class="tab-pane fade" id="@idTab">
+                            <div class="pt-4">
+                                @await Html.PartialAsync("_ListProductPartialView", item.Products)
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="badge badge-secondary light badge-xl mb-4">Tin tức</span>
+    <div class="blog-slider" style="max-width: 900px !important;">
+        <div class="blog-slider__wrp swiper-wrapper">
+            @foreach (var item in Model.Posts)
+            {
+                string url = $"/post-detail/{@item.Alias}--{@item.Id}.html";
+                <div class="blog-slider__item swiper-slide">
+                    <div class="blog-slider__img">
+
+                        <img src="/images/posts/@item.Thumb" alt="">
+                    </div>
+                    <div class="blog-slider__content">
+                        <span class="blog-slider__code">Ngày đăng: @item.CreateDate.Value.ToString("dd/MM/yyyy")</span>
+                        <div class="blog-slider__title">@item.Title</div>
+                        <div class="blog-slider__text">@item.ShortDesc </div>
+                        <a href="@url" class="blog-slider__button">Đọc thêm</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="blog-slider__pagination"></div>
+    </div>
+    <br />
+    <br />
+
+
+    
+
+
+
+
+</div>
+<section class="testimonials">
+        <div class="container">
+            <div class="title">
+                <h5>Testimonial</h5>
+                <h2>Khách hàng nói gì?</h2>
+            </div>
+            <div class="owl-carousel owl-theme testi">
+                <!-- Single Starts -->
+                <div class="item">
+                    <div class="profile">
+                        <img src="/images/avtHai.jpg" alt="">
+                        <div class="information">
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <p>Lại Chí Hải</p>
+                            <span>Web Developer</span>
+                        </div>
+                    </div>
+                    <p>Các sản phẩm của BFF Toy đều rất chất lượng, thái độ phục vụ khách hàng rất tốt. Không quá khi nói BFF Toy là cửa hàng đồ chơi nằm ở top đầu trong thành phố.</p>
+                    <div class="icon">
+                        <i class="fa fa-quote-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <!-- Single Ends -->
+                <div class="item">
+                    <div class="profile">
+                        <img src="/images/avtvan.jpg" alt="">
+                        <div class="information">
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <p>Phan Văn Vạn</p>
+                            <span>Web Developer</span>
+                        </div>
+                    </div>
+                    <p>Các sản phẩm của BFF Toy đều rất chất lượng, thái độ phục vụ khách hàng rất tốt. Không quá khi nói BFF Toy là cửa hàng đồ chơi nằm ở top đầu trong thành phố.</p>
+                    <div class="icon">
+                        <i class="fa fa-quote-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+@section Scripts{
+    <script>
+        var swiper = new Swiper('.blog-slider', {
+            spaceBetween: 30,
+            effect: 'fade',
+            loop: true,
+            mousewheel: {
+                invert: false,
+            },
+            // autoHeight: true,
+            pagination: {
+                el: '.blog-slider__pagination',
+                clickable: true,
+            }
+        });
+
+        $('.testi.owl-carousel').owlCarousel({
+            items: 2,
+            margin: 10,
+            lazyLoad: true,
+            dots: true,
+            autoPlay: true,
+            autoPlayTimeout: 3000,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                600: {
+                    items: 2,
+                },
+                1000: {
+                    items: 2,
+                }
+            }
+        });
+
+
+
+        $(".add-to-cart").click(function() {
+            var productid = $(this).data("productid");
+            var soLuong = $('#txtQuantity').val();
+            $.ajax({
+                url: '/them-vao-gio.html',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    productID: productid,
+                    amount: soLuong
+                },
+                success: function(response) {
+                    if (response.status == "failed") {
+
+                        notyf.error(response.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                        notyf.success(response.data);
+                    }
+                },
+                error: function(error) {
+                    alert("There was an error posting the data to the server: " + error.responseText);
+                }
+            });
+        });
+        function loadHeaderCart() {
+            $('#miniCart').load("/load-cart-ajax.html");
+            $('#count-item-cart').load("/count-item-cart.html");
+        }
+
+
+
+        function removeCart() {
+            var productid = $("#removecart").attr("data-productid");
+            $.ajax({
+                url: "/xoa-gio-hang.html",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Cart Error !")
+                }
+            });
+        }
+
+    </script>
+
+}
+
+
+

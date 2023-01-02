@@ -1,0 +1,178 @@
+﻿@model Tfood.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Chỉnh sửa sản phẩm</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Nav tabs -->
+                    <div class="custom-tab-1">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#home1"><i class="la la-info-circle mr-2"></i> Thông tin cơ bản</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#profile1"><i class="las la-cog mr-2"></i> Thiết lập</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#contact1"><i class="las la-pen-nib mr-2"></i>  Thông tin chi tiết</a>
+                            </li>
+
+                        </ul>
+
+                        <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Thumb" />
+                            <input type="hidden" asp-for="DateCreate" />
+                            <input type="hidden" asp-for="Alias" />
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="home1" role="tabpanel">
+                                    <div class="pt-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Name" class="control-label">Tên sản phẩm:</label>
+                                                    <input asp-for="Name" class="form-control" />
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="CatId" class="control-label">Danh mục:</label>
+                                                    <select asp-for="CatId" class="form-control" asp-items="ViewBag.Cate">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Price" class="control-label">Giá:</label>
+                                                    <input asp-for="Price" class="form-control" />
+                                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Thumb" class="control-label">Ảnh đại diện:</label>
+                                                    <input style="border: none !important;" name="ProductThumb" type="file" asp-for="Thumb" class="form-control" onchange="document.getElementById('imgReview').src = window.URL.createObjectURL(this.files[0])" />
+                                                    <span asp-validation-for="Thumb" class="text-danger"></span>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="UnitInStock" class="control-label">Số lượng</label>
+                                                    <input asp-for="UnitInStock" class="form-control" />
+                                                    <span asp-validation-for="UnitInStock" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-4">
+                                                <img id="imgReview" alt="Ảnh" src="/images/products/@Model.Thumb" width="150" height="150" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile1">
+                                    <div class="pt-4">
+                                        <div class="col-md-6">
+
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="IsBestSeller" /> Bán chạy
+                                                </label>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="HomeFlag" /> Ghim ở Trang chủ
+                                                </label>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="Active" /> Kích hoạt
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="contact1">
+                                    <div class="pt-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Tags" class="control-label">Tags:</label>
+                                                    <input asp-for="Tags" class="form-control" />
+                                                    <span asp-validation-for="Tags" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Title" class="control-label">Title:</label>
+                                                    <input asp-for="Title" class="form-control" />
+                                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="MetaDesc" class="control-label">MetaDesc:</label>
+                                                    <input asp-for="MetaDesc" class="form-control" />
+                                                    <span asp-validation-for="MetaDesc" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="MetaKey" class="control-label">MetaKey:</label>
+                                                    <input asp-for="MetaKey" class="form-control" />
+                                                    <span asp-validation-for="MetaKey" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label asp-for="ShortDesc" class="control-label">Mô tả ngắn:</label>
+                                                    <textarea rows="4" asp-for="ShortDesc" class="form-control"></textarea>
+                                                    <span asp-validation-for="ShortDesc" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label asp-for="Description" class="control-label">Mô tả chi tiết:</label>
+                                                    <input asp-for="Description" class="form-control" />
+                                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                    <div>
+                        <a asp-action="Index">Trở lại trang trước</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

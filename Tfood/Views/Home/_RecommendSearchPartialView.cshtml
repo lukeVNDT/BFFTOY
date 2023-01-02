@@ -1,0 +1,33 @@
+﻿@model List<Tfood.Models.Product>
+@if (Model != null && Model.Count() > 0)
+{
+    @foreach (var item in Model)
+    {
+        string url = $"/product-detail/{item.Alias}--{item.Id}.html";
+        <div class="media">
+        <a class="pull-left" href="@url">
+            <img class="media-object" width="50" src="/images/products/@item.Thumb">
+        </a>
+        <div class="media-body">
+            <a href="@url">
+                <h4 class="media-heading">@item.Name</h4>
+            </a>
+
+            <p>@item.Price.Value.ToString("#,##0") VNĐ</p>
+        </div>
+    </div>
+    }
+}
+else
+{
+    <div class="media">
+        
+        <div class="media-body">
+
+            <h4 class="media-heading">Không tìm thấy sản phẩm phù hợp</h4>
+
+
+
+        </div>
+    </div>
+}

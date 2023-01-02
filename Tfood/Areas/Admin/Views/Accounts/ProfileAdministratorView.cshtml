@@ -1,0 +1,182 @@
+﻿@model Tfood.Models.Account
+@{
+    ViewData["Title"] = "ProfileAdministratorView";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Tfood.Areas.Admin.ViewModel.AdministratorChangePasswordVM changePassword = new Tfood.Areas.Admin.ViewModel.AdministratorChangePasswordVM();
+}
+
+@if (Model != null)
+{
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Xin chào, @Model.Fullname</h4>
+                    <p class="mb-0">Đây là trang cá nhân của bạn</p>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Trang chủ</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+
+        <div class="row">
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="profile-tab">
+                            <div class="custom-tab-1">
+                                <ul class="nav nav-tabs">
+
+                                    <li class="nav-item">
+                                        <a href="#about-me" data-toggle="tab" class="nav-link"><i class="la la-user mr-2"></i> Thông tin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#profile-settings" data-toggle="tab" class="nav-link"><i class="fa fa-cog mr-2" aria-hidden="true"></i> Tài khoản</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#secure-account" data-toggle="tab" class="nav-link"><i class="fa fa-shield mr-2" aria-hidden="true"></i> Bảo mật</a>
+                                    </li>
+
+
+                                </ul>
+                                <div class="tab-content">
+
+                                    <div id="about-me" class="tab-pane active">
+
+                                        <div class="profile-personal-info mt-4">
+                                            <h4 class="text-primary mb-4">Thông tin cá nhân</h4>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Họ và tên <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Fullname</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Địa chỉ Email <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Email</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Số điện thoại <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Phone</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">
+                                                        Quyền <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span>@Model.Role.Name</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div id="profile-settings" class="tab-pane fade">
+                                        <div class="mt-4">
+                                            <div class="settings-form">
+                                                <h4 class="text-primary mb-4">Cài đặt tài khoản</h4>
+                                                <form id="update-profile" asp-controller="Accounts" asp-action="UpdateProfile" asp-route-userid="@Model.Id">
+                                                    <input type="hidden" asp-for="Id" />
+                                                    <input type="hidden" asp-for="Email" />
+                                                    <input type="hidden" asp-for="Password" />
+                                                    <input type="hidden" asp-for="CreateDate" />
+                                                    <input type="hidden" asp-for="Salt" />
+                                                    <input type="hidden" asp-for="Deactivate" />
+                                                    <input type="hidden" asp-for="RoleId" />
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Họ và tên</label>
+                                                            <input asp-for="@Model.Fullname" type="text" placeholder="Email" class="form-control">
+                                                            <span asp-validation-for="@Model.Fullname" class="text-danger"></span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Số điện thoại</label>
+                                                            <input asp-for="@Model.Phone" type="number" placeholder="1234 Main St" class="form-control">
+                                                            <span asp-validation-for="@Model.Phone" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <button id="btn-update-profile" class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div id="secure-account" class="tab-pane fade">
+                                        @await Html.PartialAsync("_ChangePasswordAdministratorPartialView", changePassword)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    <script>
+
+        var spinner = '<div style="height:1.5rem;width:1.5rem;" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>';
+
+        $('#btn-change').click(function(e) {
+            e.preventDefault();
+            var formData = $("#change-password-form").serialize();
+            $(this).html(spinner);
+            setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/doi-mat-khau-quan-tri.html',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: formData,
+                    success: function(result) {
+                        if (result.status == "failed") {
+                            $('#btn-change').text("Lưu thay đổi");
+                            notyf.error(result.data);
+                        }
+                        else {
+                            $("#current-pass").val("");
+                            $("#new-pass").val("");
+                            $("#confirm-pass").val("");
+                            $('#btn-change').text("Lưu thay đổi");
+                            notyf.success('Thay đổi mật khẩu thành công');
+                        }
+                    }
+                })
+            }, 1000);
+        })
+    </script>
+}
+

@@ -1,0 +1,227 @@
+﻿@model List<Tfood.ViewModel.CartVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="container-fluid">
+        <div class="form-head d-flex mb-3 align-items-start">
+            <div class="mr-auto d-none d-lg-block">
+                <h3>Giỏ hàng</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-primary">Trang chủ</a></li>
+                    <li class="breadcrumb-item active"><a asp-controller="Cart" asp-action="Index">Giỏ hàng</a></li>
+                </ol>
+            </div>
+
+        </div>
+        <!-- row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" id="load-cart-table">
+                    @await Component.InvokeAsync("CartTable")
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="form-head d-flex mb-3 align-items-start">
+            <div class="mr-auto d-none d-lg-block">
+                <h3>Giỏ hàng</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-primary">Trang chủ</a></li>
+                    <li class="breadcrumb-item active"><a asp-controller="Cart" asp-action="Index">Giỏ hàng</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" id="load-cart-table">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive-md">
+                                <h3 class="text-center"><i class="las la-exclamation-circle scale5 text-danger mr-2"></i> Giỏ hàng trống.</h3>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts{
+    <script>
+        var notyf = new Notyf({
+            duration: 3000,
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+        });
+        function loadCart() {
+            $("#load-cart-table").load("/load-cart-component.html");
+        }
+        function loadHeaderCart() {
+            $('#miniCart').load("/load-cart-ajax.html");
+            $('#count-item-cart').load("/count-item-cart.html");
+        }
+
+        function removeCart() {
+            var productid = $("#removecart").attr("data-productid");
+            $.ajax({
+                url: "/xoa-gio-hang.html",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                        loadCart();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Cart Error !")
+                }
+            });
+        }
+        function DeleteItem(id) {
+            var productid = id;
+            $.ajax({
+                url: "/xoa-gio-hang.html",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadCart();
+                        loadHeaderCart();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Cart Error !")
+                }
+            });
+        }
+
+        function ChangeQuantityIncrease(productid, quantity) {
+            var currentQty = $('#product-qty-' + productid).val();
+            var result = parseInt(currentQty) + parseInt(quantity);
+            $('#product-qty-' + productid).val(result);
+            $.ajax({
+                url: "/cap-nhat-gio-hang.html",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    productID: productid,
+                    amount: quantity,
+                    type: "Increase"
+                },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadCart();
+                        loadHeaderCart();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Cart Error !")
+                }
+            });
+        }
+
+
+        function ChangeQuantityDecrease(productid, quantity) {
+            var currentQty = $('#product-qty-' + productid).val();
+            var result = parseInt(currentQty) - parseInt(quantity);
+            if (result == 0 || result < 0) {
+                notyf.error("Số lượng sản phẩm tối thiểu là 1 sản phẩm");
+            }
+            else {
+                $('#product-qty-' + productid).val(result);
+
+                $.ajax({
+                    url: "/cap-nhat-gio-hang.html",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: quantity,
+                        type: "Decrease"
+                    },
+                    success: function(result) {
+                        if (result.status == "failed") {
+
+                            notyf.error(result.data);
+                        }
+                        else {
+                            loadCart();
+                            loadHeaderCart();
+                        }
+                    },
+                    error: function(rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+
+            }
+
+
+        }
+
+        function ChangeQuantityInput(productid) {
+            var input = $('#product-qty-'+productid).val();
+            if (input == 0 || input < 0) {
+                notyf.error("Số lượng ít nhất là 1 sản phẩm, nếu không hãy xóa sản phẩm đó khỏi giỏ hàng");
+            }
+            else {
+                $.ajax({
+                    url: "/cap-nhat-gio-hang-nhap-vao.html",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: input
+                    },
+                    success: function(result) {
+                        if (result.status == "failed") {
+
+                            notyf.error(result.data);
+                        }
+                        else {
+                            loadCart();
+                            loadHeaderCart();
+                        }
+                    },
+                    error: function(rs) {
+                        alert("Remove Cart Error !")
+                    }
+                });
+            }
+
+        }
+
+    </script>
+}

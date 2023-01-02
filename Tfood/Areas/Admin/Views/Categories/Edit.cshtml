@@ -1,0 +1,51 @@
+﻿@model Tfood.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container-fluid">
+
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Cập nhật danh mục sản phẩm</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <form id="roleForm" asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Thumb" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label">Tên danh mục:</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Mô tả:</label>
+                            <textarea rows="4" asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Thumb" class="control-label">Ảnh đại diện:</label>
+                            <input style="border: none !important;" name="CategoriesThumb" type="file" asp-for="Thumb" class="form-control" onchange="document.getElementById('imgReview').src = window.URL.createObjectURL(this.files[0])" />
+                            <span asp-validation-for="Thumb" class="text-danger"></span>
+                        </div>
+                        <img id="imgReview" alt="Ảnh" src="/images/categories/@Model.Thumb" width="150" height="150" />
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary save-button">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <a asp-action="Index">Trở về trang trước</a>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

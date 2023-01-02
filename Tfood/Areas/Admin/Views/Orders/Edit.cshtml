@@ -1,0 +1,245 @@
+﻿@model List<Tfood.Models.Order>
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<OrderDetail> orderdetail = ViewBag.OrderDetail;
+}
+
+@if (Model != null && Model.Count() > 0)
+{
+    @foreach (var item in Model)
+    {
+        <div class="container-fluid">
+            <h4 class="text-primary mb-4">Cập nhật đơn hàng</h4>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <div class="row mb-5">
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6><strong>Hóa đơn</strong></h6>
+
+
+                        </div>
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6><strong>Ngày: @item.OrderDate.Value.ToString("dd/MM/yyyy")</strong></h6>
+
+
+                        </div>
+                        <div class="mt-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-lg-end justify-content-md-center justify-content-xs-start">
+                            <div class="row align-items-center" style="font-size: 0.9rem;">
+                                <div class="col-auto">
+                                    <h6>
+                                        <strong>Trạng thái: </strong>
+                                        @if (item.TransactionStatusId == 5)
+                                        {
+                                            <strong>Đơn hàng mới</strong>
+                                        }
+                                        else if (item.TransactionStatusId == 6)
+                                        {
+                                            <strong>Đang xử lý</strong>
+                                        }
+                                        else if (item.TransactionStatusId == 7)
+                                        {
+                                            <strong>Đang giao</strong>
+                                        }
+                                        else if (item.TransactionStatusId == 8)
+                                        {
+                                            <strong>Đã giao</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong>Đã hủy</strong>
+                                        }
+                                    </h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-5">
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                        </div>
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            @if (item.ShipDate != null)
+                            {
+                                <div> <strong>Ngày giao hàng: @item.ShipDate.Value.ToString("dd/MM/yyyy")</strong> </div>
+                            }
+
+
+
+                        </div>
+                        <div class="mt-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-lg-end justify-content-md-center justify-content-xs-start">
+                            <div class="row align-items-center" style="font-size: 0.9rem;">
+                                <div class="col-auto">
+                                    @if (item.PaymentDate != null)
+                                    {
+                                        <div> <strong>Ngày thanh toán: @item.PaymentDate.Value.ToString("dd/MM/yyyy")</strong> </div>
+                                    }
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-5">
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6>Từ:</h6>
+                            <div> <strong>BFFShop</strong> </div>
+
+                        </div>
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6>Đến:</h6>
+                            <div> <strong>@item.FullName</strong> </div>
+                            <div>Email: @item.Email</div>
+                            <div>Số điện thoại: @item.Phone</div>
+                            <div>Địa chỉ: @item.Address</div>
+
+                        </div>
+                        <div class="mt-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-lg-end justify-content-md-center justify-content-xs-start">
+                            <div class="row align-items-center" style="font-size: 0.9rem;">
+                                <div class="col-auto">
+
+                                    <span>
+                                        Vui lòng kiểm tra kỹ đơn hàng của bạn
+                                    </span><br>
+                                    <small class="text-muted">Phản hồi với chúng tôi nếu có sai sót</small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center">STT</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Hình ảnh</th>
+                                        <th class="right">Đơn giá</th>
+                                        <th class="center">Số lượng</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (orderdetail != null && orderdetail.Count() > 0)
+                                    {
+                                        @foreach (var detail in orderdetail)
+                                        {
+                                            int i = 1;
+                                            <tr>
+                                                <td class="center">@(i++)</td>
+                                                <td class="left strong">@detail.Product.Name</td>
+                                                <td class="left">
+                                                    <img class="align-self-end mr-3 rounded" width="100" src="/images/products/@detail.Product.Thumb" alt="DexignZone" />
+                                                </td>
+                                                <td class="right">@detail.Price.Value.ToString("#,##0") VNĐ</td>
+                                                <td class="center">@detail.Quantity</td>
+
+                                            </tr>
+                                        }
+                                    }
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-5"> </div>
+                            <div class="col-lg-4 col-sm-5 ml-auto">
+                                <table class="table table-clear">
+                                    <tbody>
+
+                                        <tr>
+                                            <td class="left"><strong>Tổng tiền</strong></td>
+                                            <td class="right"><strong>@item.Total.ToString("#,##0") VNĐ</strong>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="order-form" asp-action="ChangeStatus">
+                        <div class="mb-3 col-md-4">
+                            <label for="status">Trạng thái</label>
+                            <select asp-for="@item.TransactionStatusId" name="TransactionStatusId" class="form-control" asp-items="ViewBag.TransactionStatusId">
+                                <option>---Chọn trạng thái---</option>
+                            </select>
+
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="@item.Paid" /> Đã thanh toán
+                                </label>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="mt-4">
+                            <button id="btn-change-status" class="btn btn-primary" type="submit" data-orderid="@item.Id">Cập nhật</button> |
+                            <a class="btn btn-secondary" asp-action="Index">Trở về trang trước</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+}
+@section Scripts
+    {
+    <script>
+        var notyf = new Notyf({
+            duration: 3000,
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+        });
+
+        var spinner = '<div style="height:1.5rem;width:1.5rem;" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>';
+        $("#btn-change-status").click(function(e) {
+            e.preventDefault();
+            var ID = $(this).data("orderid");
+            var formData = $("#order-form").serialize();
+            $(this).html(spinner);
+            setTimeout(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/thay-doi-trang-thai-don.html/' + ID,
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: formData,
+                    success: function(result) {
+                        if (result.status == "failed") {
+                            $('#btn-change-status').text("Cập nhật");
+                            notyf.error(result.data);
+
+                        }
+                        else {
+
+                            $('#btn-change-status').text("Cập nhật");
+                            notyf.success(result.data);
+                            window.location.href = result.returnUrl;
+                        }
+                    }
+                });
+            }, 1000);
+        });
+    </script>
+}

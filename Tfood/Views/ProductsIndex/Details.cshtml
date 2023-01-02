@@ -1,0 +1,391 @@
+﻿@model Tfood.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Product> relationalProduct = ViewBag.RelationalProduct;
+    List<Favorite> favorites = ViewBag.Favorite;
+}
+<style>
+        .widget-carousel .owl-item img {
+        max-width: unset !important;
+    }
+    .fa-heart
+    {
+        color: #f72b50 !important;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+               
+                <p class="mb-0">Your business dashboard template</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active"><a asp-controller="Products" asp-action="Index">@Model.Name</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-3 ">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade show active" id="first">
+                                    <img class="img-fluid" src="/images/products/@Model.Thumb" alt="">
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="second">
+                                    <img class="img-fluid" src="images/product/2.jpg" alt="">
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="third">
+                                    <img class="img-fluid" src="images/product/3.jpg" alt="">
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="for">
+                                    <img class="img-fluid" src="images/product/4.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="tab-slide-content new-arrival-product mb-4 mb-xl-0">
+                                <!-- Nav tabs -->
+                                <ul class="nav slide-item-list mt-3" role="tablist">
+                                    <li role="presentation" class="show">
+                                        <a href="#first" role="tab" data-toggle="tab">
+                                            <img class="img-fluid" src="images/tab/1.jpg" alt="" width="50">
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#second" role="tab" data-toggle="tab"><img class="img-fluid" src="images/tab/2.jpg" alt="" width="50"></a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#third" role="tab" data-toggle="tab"><img class="img-fluid" src="images/tab/3.jpg" alt="" width="50"></a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#for" role="tab" data-toggle="tab"><img class="img-fluid" src="images/tab/4.jpg" alt="" width="50"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--Tab slider End-->
+                        <div class="col-xl-9 col-sm-12">
+                            <div class="product-detail-content">
+                                <!--Product details-->
+                                <div class="new-arrival-content pr">
+                                    <h4>@Model.Name</h4>
+
+                                    <p class="price">@Model.Price.Value.ToString("#,##0") VNĐ</p>
+                                    <p>
+                                        Tình trạng:
+                                        @if (@Model.UnitInStock > 0)
+                                        {
+                                            <span class="badge badge-success light">
+                                                Còn hàng <i class="fa fa-shopping-basket"></i>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sencondary light">
+                                                Hết hàng <i class="fa fa-shopping-basket"></i>
+                                            </span>
+                                        }
+                                    </p>
+                                    <p class="text-content">@Model.Description</p>
+
+                                    <!--Quantity start-->
+                                    <div class="col-2 px-0">
+                                        <input id="txtQuantity" type="number" name="num" class="form-control input-btn input-number" min="1" value="1">
+                                    </div>
+                                    <!--Quanatity End-->
+                                    <div class="shopping-cart mt-3">
+                                        <button data-productid="@Model.Id" class="btn btn-primary btn-lg add-to-cart">
+                                            <i class="fa fa-shopping-basket mr-4"></i>Thêm vào giỏ
+                                        </button>
+                                        <button id="heart-btn-@Model.Id" data-productid="@Model.Id" class="btn light btn-secondary btn-lg btn-favorite"><i class="@(favorites.Count() > 0 ? "fa fa-heart" : "fa fa-heart-o")" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <span class="badge badge-secondary light badge-xl mb-4">Sản phẩm liên quan</span>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget-carousel owl-carousel">
+                @foreach (var item in relationalProduct)
+                {
+                    string url = $"/product-detail/{item.Alias}--{item.Id}.html";
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="new-arrival-product">
+                                <div class="new-arrivals-img-contnent">
+                                    <a href="@url">
+                                    <img style="width: 260px !important; height:280px !important;" class="img-fluid" src="/images/products/@item.Thumb" alt="">
+                                </a>
+                                    
+                                </div>
+                                <div class="new-arrival-content text-center mt-3">
+                                    <a href="@url">
+                                    <h4>@item.Name</h4>
+                                </a>
+                                    <span class="price">@item.Price.Value.ToString("#,##0") VNĐ</span>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                <button data-productid="@item.Id" class="btn btn-success btn-xs add-to-cart-relation">Thêm vào giỏ</button>
+
+                                <a href="@url" class="btn light btn-warning btn-xs ml-2">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        
+
+        function loadHeaderFavorite() {
+            $('#miniFavorite').load("/load-favorite-index.html");
+            $('#count-item-favorite').load("/count-item-favorite.html");
+        }
+
+        function loadHeaderCart() {
+            $('#miniCart').load("/load-cart-ajax.html");
+            $('#count-item-cart').load("/count-item-cart.html");
+        }
+
+        function removeCart() {
+            var productid = $("#removecart").attr("data-productid");
+            $.ajax({
+                url: "/xoa-gio-hang.html",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Cart Error !")
+                }
+            });
+        }
+
+
+        $(".add-to-cart").click(function() {
+            var productid = $(this).data("productid");
+            var soLuong = $('#txtQuantity').val();
+            if (parseInt(soLuong) == 0 || parseInt(soLuong) < 0)
+            { 
+                notyf.error("Số lượng sản phẩm phải tối thiểu là 1");
+            }
+            else
+            {
+                $.ajax({
+                url: '/them-vao-gio.html',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    productID: productid,
+                    amount: soLuong
+                },
+                success: function(response) {
+                    if (response.status == "failed") {
+
+                        notyf.error(response.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                        notyf.success(response.data);
+                    }
+                },
+                error: function(error) {
+                    alert("There was an error posting the data to the server: " + error.responseText);
+                }
+            });
+            }
+            
+        });
+
+
+
+        $(".add-to-cart-relation").click(function() {
+            var productid = $(this).data("productid");
+            var soLuong = 1;
+            $.ajax({
+                url: '/them-vao-gio.html',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    productID: productid,
+                    amount: soLuong
+                },
+                success: function(response) {
+                    if (response.status == "failed") {
+
+                        notyf.error(response.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                        notyf.success(response.data);
+                    }
+                },
+                error: function(error) {
+                    alert("There was an error posting the data to the server: " + error.responseText);
+                }
+            });
+        });
+
+
+        $(".btn-favorite").click(function() {
+            var product_id = $(this).data('productid');
+            var heartIcon = '<i style="color: #f72b50 !important;" class="fa fa-heart" aria-hidden="true"></i>';
+            $.ajax({
+                url: "/Favorite/AddFavorite/",
+                method: "POST",
+                dataType: 'JSON',
+                data: {
+                    product_id: product_id
+                },
+                success: function(result) {
+                    if (result.status == "success") {
+                        $('#heart-btn-' + product_id).html(heartIcon);
+                        notyf.success(result.data);
+                        loadHeaderFavorite();
+                    }
+                    else if (result.status == "success-remove") {
+                        $('#heart-btn-' + product_id).html(result.icon);
+                        notyf.success(result.data);
+                        loadHeaderFavorite();
+                    }
+                    else {
+                        notyf.error(result.data);
+                    }
+
+                }
+            });
+
+        });
+
+
+
+        function removeFavorite() {
+            var productid = $("#removefavorite").attr("data-productid");
+            $.ajax({
+                url: "/Favorite/RemoveFavorite",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadHeaderFavorite();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Favorite Error !")
+                }
+            });
+        }
+
+
+
+        function widgetCarousel() {
+
+            /*  testimonial one function by = owl.carousel.js */
+            jQuery('.widget-carousel').owlCarousel({
+                loop: false,
+                margin: 30,
+                nav: true,
+                autoplaySpeed: 3000,
+                navSpeed: 3000,
+                paginationSpeed: 3000,
+                slideSpeed: 3000,
+                smartSpeed: 3000,
+                autoplay: false,
+                dots: false,
+                navText: ['<i class="fa fa-caret-left"></i>', '<i class="fa fa-caret-right"></i>'],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+
+                    480: {
+                        items: 2
+                    },
+
+                    1200: {
+                        items: 3
+                    },
+                    1750: {
+                        items: 4
+                    }
+                }
+            })
+        }
+        function carouselReview() {
+            /*  testimonial one function by = owl.carousel.js */
+            jQuery('.testimonial-one').owlCarousel({
+                loop: true,
+                autoplay: true,
+                margin: 0,
+                nav: false,
+                dots: false,
+                navText: [''],
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+
+                    480: {
+                        items: 1
+                    },
+
+                    767: {
+                        items: 1
+                    },
+                    1000: {
+                        items: 1
+                    }
+                }
+            })
+            /*Custom Navigation work*/
+            jQuery('#next-slide').on('click', function() {
+                $('.testimonial-one').trigger('next.owl.carousel');
+            });
+
+            jQuery('#prev-slide').on('click', function() {
+                $('.testimonial-one').trigger('prev.owl.carousel');
+            });
+            /*Custom Navigation work*/
+        }
+
+        jQuery(window).on('load', function() {
+            setTimeout(function() {
+                widgetCarousel();
+                carouselReview();
+            }, 1000);
+        });
+    </script>
+}

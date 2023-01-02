@@ -1,0 +1,126 @@
+﻿@model Tfood.Models.Post
+
+@{
+    List<Post> relationalPost = ViewBag.RelationalPost;
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active"><a asp-controller="PostsIndex" asp-action="Index">Tin tức</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+
+
+                    <div class="profile-news">
+                        <h5 class="text-primary d-inline">Tin tức liên quan</h5>
+                        @if (relationalPost != null && relationalPost.Count() > 0)
+                        {
+                            foreach (var item in relationalPost)
+                            {
+                                string url = $"/post-detail/{item.Alias}--{item.Id}.html";
+                                <div class="media pt-3 pb-3">
+                                    <a href="@url">
+                                        <img src="/images/posts/@item.Thumb" alt="image" class="mr-3 rounded" width="75">
+                                    </a>
+                                    <div class="media-body">
+                                        <a href="@url">
+                                            <h5 class="m-b-5">@item.Title</h5>
+                                        </a>
+                                        <p class="mb-2 text-primary">Ngày đăng: @item.CreateDate.Value.ToString("dd/MM/yyyy")</p>
+                                        <a href="@url" class="btn light btn-warning btn-xs">
+                                            Xem thêm
+                                        </a>
+                                    </div>
+                                </div>
+                                <hr />
+                            }
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="profile-tab">
+                        <div class="custom-tab-1">
+
+                            <div class="tab-content">
+                                <div id="my-posts" class="tab-pane fade active show">
+                                    <div class="my-post-content pt-3">
+
+                                        <div class="profile-uoloaded-post border-bottom-1 pb-5">
+                                            <a class="post-title" href="javascript:void()">
+                                                <h1 class="text-center">@Model.Title</h1>
+                                            </a>
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <h4 class="text-primary font-weight-bold"><i class="fa fa-bars" aria-hidden="true"></i>  Danh mục: @Model.Cat.Name</h4>
+                                            <h4 class="font-weight-bold"><i class="fa fa-calendar" aria-hidden="true"></i> Ngày đăng: @Model.CreateDate.Value.ToString("dd/MM/yyyy")</h4>
+
+
+                                            <div>@Html.Raw(@Model.Contents)</div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function loadHeaderCart() {
+            $('#miniCart').load("/load-cart-ajax.html");
+            $('#count-item-cart').load("/count-item-cart.html");
+        }
+
+        function removeCart() {
+            var productid = $("#removecart").attr("data-productid");
+            $.ajax({
+                url: "/xoa-gio-hang.html",
+                type: "POST",
+                dataType: "JSON",
+                data: { productID: productid },
+                success: function(result) {
+                    if (result.status == "failed") {
+
+                        notyf.error(result.data);
+                    }
+                    else {
+                        loadHeaderCart();
+                    }
+                },
+                error: function(rs) {
+                    alert("Remove Cart Error !")
+                }
+            });
+        }
+    </script>
+}

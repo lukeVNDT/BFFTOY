@@ -1,0 +1,82 @@
+﻿@model Tfood.Models.Customer
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Chi tiết khách hàng</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    Tên khách hàng:
+                </div>
+
+                <div class="col-sm-10">
+                    @Html.DisplayFor(model => model.Fullname)
+                </div>
+                <hr />
+                <div class="col-sm-2">
+                    Số điện thoại:
+                </div>
+
+                <div class="col-sm-10">
+                    @Html.DisplayFor(model => model.Phone)
+                </div>
+                <hr />
+                <div class="col-sm-2">
+                    Ngày sinh:
+                </div>
+
+                <div class="col-sm-10">
+                    @Html.DisplayFor(model => model.Dob)
+                </div>
+
+                <hr />
+                <div class="col-sm-2">
+                    Email:
+                </div>
+
+                <div class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </div>
+
+                <hr />
+
+
+                <div class="col-sm-2">
+                    Địa chỉ:
+                </div>
+
+                <div class="col-sm-10">
+                    @Html.DisplayFor(model => model.Address)
+                </div>
+
+                <hr />
+                <div class="col-sm-2">
+                    Ảnh đại diện:
+                </div>
+
+                <div class="col-sm-10">
+                    @if (Model.Avatar != null)
+                    {
+                        <img height="150" width="150" src="/images/customers/@Model.Avatar" />
+                    }
+                    else
+                    {
+                        <img src="/images/default-avatar.jpg" height="150" width="150"/>
+                    }
+                </div>
+
+            </div>
+            <div class="mt-4">
+                <a class="btn btn-secondary" asp-action="Index">Trở về trang trước</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,167 @@
+﻿@model List<Tfood.Models.OrderDetail>
+@{
+    List<Order> order = ViewBag.Order;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    <h4 class="text-primary mb-4">Chi tiết đơn hàng</h4>
+    <div class="card mt-3">
+        @foreach (var item in order)
+        {
+            <div class="row mb-5">
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6><strong>Hóa đơn</strong></h6>
+
+
+                        </div>
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6><strong>Ngày: @item.OrderDate.Value.ToString("dd/MM/yyyy")</strong></h6>
+
+
+                        </div>
+                        <div class="mt-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-lg-end justify-content-md-center justify-content-xs-start">
+                            <div class="row align-items-center" style="font-size: 0.9rem;">
+                                <div class="col-auto">
+                                    <h6>
+                                        <strong>Trạng thái: </strong>
+                                         @if (item.TransactionStatusId == 5)
+                                        {
+                                            <strong>Đơn hàng mới</strong>
+                                        }
+                                        else if (item.TransactionStatusId == 6)
+                                        {
+                                            <strong>Đang xử lý</strong>
+                                        }
+                                        else if (item.TransactionStatusId == 7)
+                                        {
+                                            <strong>Đang giao</strong>
+                                        }
+                                        else if (item.TransactionStatusId == 8)
+                                        {
+                                            <strong>Đã giao</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong>Đã hủy</strong>
+                                        }
+                                    </h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-5">
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            
+                        </div>
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            @if (item.ShipDate != null)
+                            {
+                                <div> <strong>Ngày giao hàng: @item.ShipDate.Value.ToString("dd/MM/yyyy")</strong> </div>
+                            }
+                            
+                           
+
+                        </div>
+                        <div class="mt-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-lg-end justify-content-md-center justify-content-xs-start">
+                            <div class="row align-items-center" style="font-size: 0.9rem;">
+                                <div class="col-auto">
+                                    @if (item.PaymentDate != null)
+                                    {
+                                        <div> <strong>Ngày thanh toán: @item.PaymentDate.Value.ToString("dd/MM/yyyy")</strong> </div>
+                                    }
+                                    
+                                 
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-5">
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6>Từ:</h6>
+                            <div> <strong>BFFShop</strong> </div>
+
+                        </div>
+                        <div class="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                            <h6>Đến:</h6>
+                            <div> <strong>@item.FullName</strong> </div>
+                            <div>Email: @item.Email</div>
+                            <div>Số điện thoại: @item.Phone</div>
+                            <div>Địa chỉ: @item.Address</div>
+
+                        </div>
+                        <div class="mt-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-lg-end justify-content-md-center justify-content-xs-start">
+                            <div class="row align-items-center" style="font-size: 0.9rem;">
+                                <div class="col-auto">
+
+                                    <span>
+                                        Vui lòng kiểm tra kỹ đơn hàng của bạn
+                                    </span><br>
+                                    <small class="text-muted">Phản hồi với chúng tôi nếu có sai sót</small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+        }
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="center">STT</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Hình ảnh</th>
+                            <th class="right">Đơn giá</th>
+                            <th class="center">Số lượng</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            int i = 1;
+                            <tr>
+                                <td class="center">@(i++)</td>
+                                <td class="left strong">@item.Product.Name</td>
+                                <td class="left">
+                                    <img class="align-self-end mr-3 rounded" width="100" src="/images/products/@item.Product.Thumb" alt="DexignZone" />
+                                </td>
+                                <td class="right">@item.Price.Value.ToString("#,##0") VNĐ</td>
+                                <td class="center">@item.Quantity</td>
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-5"> </div>
+                <div class="col-lg-4 col-sm-5 ml-auto">
+                    <table class="table table-clear">
+                        <tbody>
+                            @foreach (var item in order)
+                            {
+                                <tr>
+                                <td class="left"><strong>Tổng tiền</strong></td>
+                                <td class="right"><strong>@item.Total.ToString("#,##0") VNĐ</strong>
+
+                            </tr>
+                            }
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}

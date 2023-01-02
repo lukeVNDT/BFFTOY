@@ -1,0 +1,79 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<Tfood.Models.Customer>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+                <div class="form-head d-flex mb-3 align-items-start">
+					<div class="mr-auto d-none d-lg-block">
+                        <h3>Bảng liệt khách hàng</h3>
+						<ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-primary">Dashboard</a></li>
+                            <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Customers" asp-action="Index">Danh sách khách hàng</a></li>
+                        </ol>
+					</div>
+					
+                    
+				</div>
+                <!-- row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                             
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-responsive-md">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:80px;">STT</th>
+                                                <th>Email</th>
+                                                <th>Họ và tên</th>
+                                                <th>SĐT</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model != null)
+                                            {
+                                                int i = 1;
+                                                foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                    <td>@(i++)</td>
+                                                    <td>@item.Email</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center"><img src="/images/customers/@item.Avatar" class="rounded-lg mr-2" width="24" alt=""/> <span class="w-space-no">@item.Fullname</span></div>
+                                                  
+                                                    </td>
+                                                    <td>@item.Phone</td>
+                                                    <td>
+													    
+														   <div class="d-flex">
+                                                               <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary shadow btn-xs sharp mr-1"><i class="fa fa-eye"></i></a>
+                                                           </div>
+												
+												    </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table
+                                    <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="Customers" asp-action="Index"/>
+  </ul>
+</nav>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

@@ -1,0 +1,6 @@
+﻿@model List<Tfood.ViewModel.CartVM>
+@if (Model != null  && Model.Count > 0)
+{
+    <a href="javascript:void()" class="badge light badge-danger custom-badge">@Model.Count()</a>
+}
+

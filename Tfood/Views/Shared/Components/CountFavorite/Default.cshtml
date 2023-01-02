@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model List<Tfood.Models.Favorite>
+@if (Context.Session.GetString("CustomerId") != null)
+{
+    @if (Model != null && Model.Count > 0)
+    {
+        <a href="javascript:void()" class="badge light badge-danger custom-badge">@Model.Count()</a>
+    }
+}

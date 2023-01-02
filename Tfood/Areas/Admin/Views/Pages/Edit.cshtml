@@ -1,0 +1,157 @@
+﻿@model Tfood.Models.Page
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Chỉnh sửa pages</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Nav tabs -->
+                    <div class="custom-tab-1">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#home1"><i class="la la-info-circle mr-2"></i> Thông tin cơ bản</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#profile1"><i class="las la-cog mr-2"></i> Thiết lập</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#contact1"><i class="las la-pen-nib mr-2"></i>  Thông tin chi tiết</a>
+                            </li>
+
+                        </ul>
+
+                        <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="Thumb" />
+                            <input type="hidden" asp-for="CreateDate" />
+                            <input type="hidden" asp-for="Alias" />
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="home1" role="tabpanel">
+                                    <div class="pt-4">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="Name" class="control-label">Tên pages:</label>
+                                                    <input asp-for="Name" class="form-control" />
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label asp-for="Thumb" class="control-label">Ảnh đại diện:</label>
+                                                    <input style="border: none !important;" name="PagesThumb" type="file" asp-for="Thumb" class="form-control" onchange="document.getElementById('imgReview').src = window.URL.createObjectURL(this.files[0])" />
+                                                    <span asp-validation-for="Thumb" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="col-md-6 mb-4">
+                                                    <img id="imgReview" alt="Ảnh" src="/images/pages/@Model.Thumb" width="150" height="150" />
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile1">
+                                    <div class="pt-4">
+                                        <div class="col-md-4">
+
+
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    Sắp xếp
+                                                </label>
+                                                <input type="number" class="form-control" asp-for="Sequence" />
+                                            </div>
+                                            <div class="custom-control custom-checkbox mb-3 checkbox-info">
+                                                <input asp-for="Published" type="checkbox" class="custom-control-input">
+                                                <label class="custom-control-label" asp-for="Published">Công khai</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="contact1">
+                                    <div class="pt-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Title" class="control-label">Title:</label>
+                                                    <input asp-for="Title" class="form-control" />
+                                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="MetaDesc" class="control-label">MetaDesc:</label>
+                                                    <input asp-for="MetaDesc" class="form-control" />
+                                                    <span asp-validation-for="MetaDesc" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="MetaKey" class="control-label">MetaKey:</label>
+                                                    <input asp-for="MetaKey" class="form-control" />
+                                                    <span asp-validation-for="MetaKey" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Icon" class="control-label">Icon:</label>
+                                                    <input asp-for="Icon" class="form-control" />
+                                                    <span asp-validation-for="Icon" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label asp-for="Contents" class="control-label">Nội dung:</label>
+                                                    @*<input asp-for="Contents" class="form-control" />*@
+                                                    <textarea class="summernote" asp-for="Contents" class="form-control"></textarea>
+                                                    <span asp-validation-for="Contents" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="submit" value="Xuất bản" class="btn btn-primary" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <a asp-action="Index">Trở lại trang trước</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote();
+        });
+    </script>
+}
